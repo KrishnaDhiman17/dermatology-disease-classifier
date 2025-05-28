@@ -1,0 +1,57 @@
+<!-- templates/index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dermatology Disease Class Predictor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Predict Disease Class</h1>
+
+    <form action="/predict" method="post" class="border p-4 rounded bg-white">
+        {% set feature_names = [
+            "erythema", "scaling", "definite borders", "itching", "koebner phenomenon",
+            "polygonal papules", "follicular papules", "oral mucosal involvement",
+            "knee and elbow involvement", "scalp involvement", "family history",
+            "melanin incontinence", "eosinophils in the infiltrate", "PNL infiltrate",
+            "fibrosis of the papillary dermis", "exocytosis", "acanthosis", "hyperkeratosis",
+            "parakeratosis", "clubbing of the rete ridges", "elongation of the rete ridges",
+            "thinning of the suprapapillary epidermis", "spongiform pustule", "munro microabcess",
+            "focal hypergranulosis", "disappearance of the granular layer",
+            "vacuolisation and damage of basal layer", "spongiosis",
+            "saw-tooth appearance of retes", "follicular horn plug",
+            "perifollicular parakeratosis", "inflammatory mononuclear infiltrate",
+            "age"
+        ] %}
+        
+        {% for i in range(33) %}
+            <div class="mb-3">
+                <label>{{ feature_names[i] | capitalize }}:</label>
+                {% if i == 32 %}
+                    <!-- Age input field (min=1) -->
+                    <input type="number" name="feature{{ i }}" class="form-control" min="1" required>
+                {% else %}
+                    <!-- Other feature fields (min=0, max=3) -->
+                    <input type="number" name="feature{{ i }}" class="form-control" min="0" max="3" required>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <div class="d-grid">
+            <button type="submit" class="btn btn-primary">Predict Disease Class</button>
+        </div>
+    </form>
+
+    {% if prediction_text %}
+    <div class="alert alert-success mt-4 text-center">
+        {{ prediction_text }}
+    </div>
+    {% endif %}
+</div>
+
+</body>
+</html>
